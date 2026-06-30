@@ -18,7 +18,7 @@ Avenue du Président Duchesne, 14600 Honfleur
 N85 BP 16, 38560 Jarrie
 Chemin des Brouves, 73130 La Chambre
 6 Rue de l'Avenir, 85700 Sèvremont
-Pôle Economique 1 route nationale 117, 64170 Lacq
+1 Route Départementale 817 64170 Lacq
 998 Route des Usines, 65300 Lannemezan
 6 Rue Guy Pellerin, 33114 Le Barp
 Rue du Buisson du Roi, 60880 Le Meux
