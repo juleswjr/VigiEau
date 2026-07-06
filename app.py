@@ -100,8 +100,9 @@ if st.button("🔍 Lancer l'analyse VigiEau", type="primary", use_container_widt
     for i, adresse in enumerate(adresses):
         progress.progress((i + 1) / len(adresses), text=f"⏳ {adresse}")
         row = {
-            "Adresse":          adresse,
             "Nom du site":       NOMS_SITES.get(adresse, ""),
+            "Adresse":          adresse,
+            
             "Niveau de gravité": "NA",
             "Types d'eau":      "",
             "Arrêté — début":   "",
@@ -173,7 +174,7 @@ if st.button("🔍 Lancer l'analyse VigiEau", type="primary", use_container_widt
     progress.empty()
 
     df = pd.DataFrame(rows, columns=[
-        "Adresse", "Nom du site", "Niveau de gravité", "Types d'eau",
+        "Nom du site", "Adresse",  "Niveau de gravité", "Types d'eau",
         "Arrêté — début", "Arrêté — fin", "Arrêté — PDF"
     ])
 
