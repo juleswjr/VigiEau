@@ -8,33 +8,36 @@ st.set_page_config(page_title="VigiEau Arkema", page_icon="💧", layout="wide")
 st.title("💧 VigiEau — Restrictions d'eau Arkema")
 st.caption("Vérifie le niveau de restriction d'eau en vigueur pour chaque site Arkema.")
 
-ADRESSES_DEFAULT = """AVELIN, 70 Rue de Lille, 59710 Avelin
-CARLING, Route de Carling, 57500 Saint-Avold
-CHATEAUROUX, 3 Allée de Chandaire, 36000 Châteauroux
-COUBERT, RD319, 77170 Coubert
-FEUCHY, Avenue de l'Hermitage, 62223 Saint-Laurent-Blangy
-GENAY, 35 Rue Ampère, 69730 Genay
-HONFLEUR, Avenue du Président Duchesne, 14600 Honfleur
-JARRIE, N85 BP 16, 38560 Jarrie
-LA CHAMBRE, Chemin des Brouves, 73130 La Chambre
-LA FLOCELLIERE, 6 Rue de l'Avenir, 85700 Sèvremont
-LACQ, 1 Route Départementale 817 64170 Lacq
-LANNEMEZAN, 998 Route des Usines, 65300 Lannemezan
-LE BARP, 6 Rue Guy Pellerin, 33114 Le Barp
-LE MEUX, Rue du Buisson du Roi, 60880 Le Meux
-LESGOR, 220 Route de L'Usine, 40400 Lesgor
-MARSEILLE, 123 Boulevard de la Millière, 13011 Marseille
-MONT, 122 Route des Pyrénées, 64300 Mont
-MOURENX, Avenue du Bourg, 64150 Mourenx
-PIERRE BENITE, 4 Chemin Henri Moissan, 69310 Pierre-Bénite
-POUZAUGE, ZI MONTIFAUT 34 RUE RENE TRUHAUT, 85700 Pouzauges
-PRIVAS, 160 Chemin de Saint-Claire, 07000 Privas
-RIBECOURT, Rue de Bailly, 60170 Ribécourt-Dreslincourt
-RION, 209 Avenue Charles Despiau, 40370 Rion-des-Landes
-SAINT AUBAN, Avenue du Jas, 04600 Château-Arnoux-Saint-Auban
-SAINVILLE, 27 Rue de la Porte de Dourdan, 28700 Sainville
-SERQUINY, Centre de production Route du Rilsan, 27470 Serquigny
-VILLERS ST PAUL, 218 Rue Frédéric Kuhlmann, 60870 Villers-Saint-Paul"""
+# ── Noms des sites (à personnaliser si besoin) ────────────────────────────────
+NOMS_SITES = {
+    "70 Rue de Lille, 59710 Avelin":                                    "Avelin",
+    "Route de Carling, 57500 Saint-Avold":                              "Saint-Avold",
+    "3 Allée de Chandaire, 36000 Châteauroux":                          "Châteauroux",
+    "RD319, 77170 Coubert":                                             "Coubert",
+    "Avenue de l'Hermitage, 62223 Saint-Laurent-Blangy":                "Saint-Laurent-Blangy",
+    "35 Rue Ampère, 69730 Genay":                                       "Genay",
+    "Avenue du Président Duchesne, 14600 Honfleur":                     "Honfleur",
+    "N85 BP 16, 38560 Jarrie":                                          "Jarrie",
+    "Chemin des Brouves, 73130 La Chambre":                             "La Chambre",
+    "6 Rue de l'Avenir, 85700 Sèvremont":                               "Sèvremont",
+    "Pôle Economique 1 route nationale 117, 64170 Lacq":                "Lacq",
+    "998 Route des Usines, 65300 Lannemezan":                           "Lannemezan",
+    "6 Rue Guy Pellerin, 33114 Le Barp":                                "Le Barp",
+    "Rue du Buisson du Roi, 60880 Le Meux":                             "Le Meux",
+    "220 Route de L'Usine, 40400 Lesgor":                               "Lesgor",
+    "123 Boulevard de la Millière, 13011 Marseille":                    "Marseille",
+    "122 Route des Pyrénées, 64300 Mont":                               "Mont",
+    "Avenue du Bourg, 64150 Mourenx":                                   "Mourenx",
+    "4 Chemin Henri Moissan, 69310 Pierre-Bénite":                      "Pierre-Bénite",
+    "ZI MONTIFAUT 34 RUE RENE TRUHAUT, 85700 Pouzauges":               "Pouzauges",
+    "160 Chemin de Saint-Claire, 07000 Privas":                         "Privas",
+    "Rue de Bailly, 60170 Ribécourt-Dreslincourt":                      "Ribécourt-Dreslincourt",
+    "209 Avenue Charles Despiau, 40370 Rion-des-Landes":                "Rion-des-Landes",
+    "Avenue du Jas, 04600 Château-Arnoux-Saint-Auban":                  "Château-Arnoux-Saint-Auban",
+    "27 Rue de la Porte de Dourdan, 28700 Sainville":                   "Sainville",
+    "Centre de production Route du Rilsan, 27470 Serquigny":            "Serquigny",
+    "218 Rue Frédéric Kuhlmann, 60870 Villers-Saint-Paul":              "Villers-Saint-Paul",
+}
 
 API_ADRESSE = "https://api-adresse.data.gouv.fr/search/"
 API_VIGIEAU = "https://api.vigieau.gouv.fr/api/zones"
@@ -72,6 +75,7 @@ if st.button("🔍 Lancer l'analyse VigiEau", type="primary", use_container_widt
         progress.progress((i + 1) / len(adresses), text=f"⏳ {adresse}")
         row = {
             "Adresse":          adresse,
+            "Nom du site":       NOMS_SITES.get(adresse, ""),
             "Niveau de gravité": "NA",
             "Types d'eau":      "",
             "Arrêté — début":   "",
@@ -143,7 +147,7 @@ if st.button("🔍 Lancer l'analyse VigiEau", type="primary", use_container_widt
     progress.empty()
 
     df = pd.DataFrame(rows, columns=[
-        "Adresse", "Niveau de gravité", "Types d'eau",
+        "Adresse", "Nom du site", "Niveau de gravité", "Types d'eau",
         "Arrêté — début", "Arrêté — fin", "Arrêté — PDF"
     ])
 
